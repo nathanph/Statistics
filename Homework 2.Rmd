@@ -5,6 +5,9 @@ date: "Sunday, September 21, 2014"
 output: html_document
 ---
 
+Part 1
+============
+
 **Problem 1**  
 The set of data containing the elements {3, 5, 8, 15, 20, 21} produces a mean of 12 and a median of 11.5
 
@@ -117,3 +120,164 @@ prop.table(table(GunOwnership,DeathPenalty),1)*100
 ```
 
 d. 80.46% of people who claimed they own a gun favor the death penalty. 65.33% of people who claimed they did not own a gun favored the death penalty. There does appear to be a difference of proportions in this regard. 
+
+
+Part 2
+============
+
+**Problem 1**
+```{r}
+Berkeley <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Berkeley.csv"))
+```
+
+**Problem 2**
+```{r}
+Sex <- Berkeley$Sex
+table(Sex)
+```
+
+```{r,echo=FALSE}
+barplot(table(Sex), 
+        col=c("pink","cyan"),
+        xlab="Sex", 
+        ylab="Number of Applicants")
+```
+
+**Problem 3**
+```{r}
+Department <- Berkeley$Department
+table(Department)
+```
+
+```{r,echo=FALSE}
+barplot(table(Department), 
+        xlab="Department", 
+        ylab="Number of Applicants")
+```
+
+**Problem 4**
+```{r}
+table(Sex,Department)
+```
+
+```{r,echo=FALSE}
+barplot(table(Sex,Department), 
+        col=c("pink","cyan"),
+        main="Number of Applicants to Each Department by Gender",
+        xlab="Department and Sex", 
+        ylab="Number of Applicants")
+```
+
+**Problem 5**
+```{r}
+Status <- Berkeley$Status
+round(prop.table(table(Status,Sex),2)*100,1)
+```
+
+
+**Problem 6**
+```{r,echo=FALSE}
+barplot(round(prop.table(table(Status,Sex),2)*100,1), 
+        col=c("green","red"),
+        main="Status by Gender",
+        xlab="Gender", 
+        ylab="Percentage of Accepted Applicants",
+        beside=TRUE)
+```
+
+**Problem 7**
+```{r}
+DeptA <- subset(Berkeley, Department=='A')
+DeptB <- subset(Berkeley, Department=='B')
+DeptC <- subset(Berkeley, Department=='C')
+DeptD <- subset(Berkeley, Department=='D')
+DeptE <- subset(Berkeley, Department=='E')
+DeptF <- subset(Berkeley, Department=='F')
+```
+
+
+**Problem 8**
+
+a.
+```{r}
+round(prop.table(table(DeptA$Status,DeptA$Sex),2)*100,1)
+```
+
+```{r,echo=FALSE}
+barplot(round(prop.table(table(DeptA$Status,DeptA$Sex),2)*100,1), 
+        col=c("green","red"),
+        main="Status by Gender",
+        xlab="Gender", 
+        ylab="Percentage of Accepted Applicants",
+        beside=TRUE)
+```
+
+b.
+```{r}
+round(prop.table(table(DeptB$Status,DeptB$Sex),2)*100,1)
+```
+
+```{r,echo=FALSE}
+barplot(round(prop.table(table(DeptB$Status,DeptB$Sex),2)*100,1), 
+        col=c("green","red"),
+        main="Status by Gender",
+        xlab="Gender", 
+        ylab="Percentage of Accepted Applicants",
+        beside=TRUE)
+```
+
+c.
+```{r}
+round(prop.table(table(DeptC$Status,DeptC$Sex),2)*100,1)
+```
+
+```{r,echo=FALSE}
+barplot(round(prop.table(table(DeptC$Status,DeptC$Sex),2)*100,1), 
+        col=c("green","red"),
+        main="Status by Gender",
+        xlab="Gender", 
+        ylab="Percentage of Accepted Applicants",
+        beside=TRUE)
+```
+
+d.
+```{r}
+round(prop.table(table(DeptD$Status,DeptD$Sex),2)*100,1)
+```
+
+```{r,echo=FALSE}
+barplot(round(prop.table(table(DeptD$Status,DeptD$Sex),2)*100,1), 
+        col=c("green","red"),
+        main="Status by Gender",
+        xlab="Gender", 
+        ylab="Percentage of Accepted Applicants",
+        beside=TRUE)
+```
+
+e.
+```{r}
+round(prop.table(table(DeptE$Status,DeptE$Sex),2)*100,1)
+```
+
+```{r,echo=FALSE}
+barplot(round(prop.table(table(DeptE$Status,DeptE$Sex),2)*100,1), 
+        col=c("green","red"),
+        main="Status by Gender",
+        xlab="Gender", 
+        ylab="Percentage of Accepted Applicants",
+        beside=TRUE)
+```
+
+f.
+```{r}
+round(prop.table(table(DeptF$Status,DeptF$Sex),2)*100,1)
+```
+
+```{r,echo=FALSE}
+barplot(round(prop.table(table(DeptF$Status,DeptF$Sex),2)*100,1), 
+        col=c("green","red"),
+        main="Status by Gender",
+        xlab="Gender", 
+        ylab="Percentage of Accepted Applicants",
+        beside=TRUE)
+```
