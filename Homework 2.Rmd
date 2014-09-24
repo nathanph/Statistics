@@ -79,3 +79,41 @@ sum(prop.table(table(FlightDelays$Delayed30,FlightDelays$Day))[2,])*100
 ```
 
 c.
+```{r}
+notDelayed <- subset(FlightDelays, Delayed30=='No')
+delayed <- subset(FlightDelays, Delayed30=='Yes')
+boxplot(notDelayed$FlightLength, delayed$FlightLength,
+        names=c("Not Delayed", "Delayed"),
+        col=c("green","red"),
+        xlab="Flight Length",
+        horizontal=TRUE)
+```
+
+d. It does appear that there is a relationship between the length of a flight and whether or not the departure is delayed at least 30 minutes. Longer flights seem to have a much higher chance of being delayed.
+
+**Problem 5**  
+
+a.
+```{r}
+Survey <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/GSS2002.csv"))
+DeathPenalty <- Survey$DeathPenalty
+table(DeathPenalty)
+```
+
+```{r,echo=FALSE}
+barplot(table(DeathPenalty), xlab="Responses", ylab="Response Count")
+```
+
+b. The summary command tells us how many people answered "NA," the table command does not.
+```{r}
+GunOwnership <- Survey$OwnGun
+table(GunOwnership)
+summary(GunOwnership)
+```
+
+c.
+```{r}
+prop.table(table(GunOwnership,DeathPenalty),1)*100
+```
+
+d. 80.46% of people who claimed they own a gun favor the death penalty. 65.33% of people who claimed they did not own a gun favored the death penalty. There does appear to be a difference of proportions in this regard. 
