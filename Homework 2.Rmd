@@ -64,8 +64,18 @@ barplot(prop.table(table(DepartTime))*100, xlab="Departure Times", ylab="Percent
 ```
 
 b.
+```{r}
+prop.table(table(FlightDelays$Delayed30,FlightDelays$Day))*100
+```
+
+The percentage of flight delayed less than 30 minutes is:
 ```{r, echo=FALSE}
-prop.table(table(FlightDelays$Delayed30,FlightDelays$Day))
+sum(prop.table(table(FlightDelays$Delayed30,FlightDelays$Day))[1,])*100
+```
+
+The percentage of flight delayed at least 30 minutes is:
+```{r, echo=FALSE}
+sum(prop.table(table(FlightDelays$Delayed30,FlightDelays$Day))[2,])*100
 ```
 
 c.
