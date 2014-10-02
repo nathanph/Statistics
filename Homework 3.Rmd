@@ -71,6 +71,56 @@ xMedianYMedian<-xMedian+yMedian
 ```
 
 
+**Problem 8**  
+
+
+
+**Problem 10**  
+
+a.
+```{r}
+qnorm(0.3,10,17)
+qnorm(0.6,10,17)
+```
+
+b.
+```{r}
+qnorm(0.1,25,32)
+qnorm(0.9,25,32)
+```
+
+
+**Problem 11**  
+
+**Problem 12**  
+
+**Problem 13**  
+
+**Problem 14**  
+a. The points on 
+```{r}
+x <- rnorm(15)
+par(mfrow=c(2,1))
+qqnorm(x)
+qqline(x)
+hist(x)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
