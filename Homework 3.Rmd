@@ -1,0 +1,80 @@
+---
+title: "Homework 3"
+author: "Nathan Hernandez"
+date: "Sunday, September 29, 2014"
+output: html_document
+---
+
+Part 1
+============
+
+**Problem 6**  
+Numeric Summary
+
+a.  
+```{r}
+Spruce <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Spruce.csv"))
+HtChange <- Spruce$Ht.change
+summary(HtChange)
+```
+
+b. The distribution seems to be approximately normal.
+```{r, echo=FALSE}
+hist(HtChange)
+qqnorm(HtChange)
+```
+
+c.
+```{r}
+DiChange <- Spruce$Di.change
+Fertilized <- subset(Spruce,Fertilizer=='F')
+NonFertilized <- subset(Spruce,Fertilizer=='NF')
+boxplot(Fertilized$Di.change,NonFertilized$Di.change,
+        main="Diameter Change by Fertilization",
+        xlab="Diameter",
+        ylab="Fertilization",
+        horizontal=TRUE)
+axis(2, 1:2, labels=c("Fertilized","Non-Fertilized"))
+```
+
+d.
+```{r}
+tapply(Spruce$Di.change,Spruce$Fertilizer, summary)
+```
+
+e.
+```{r}
+plot(Spruce$Di.change, Spruce$Ht.change,
+     main="Diameter vs Height Change",
+     xlab="Diameter Change",
+     ylab="Height Change")
+```
+
+**Problem 7**  
+
+a.
+```{r}
+x<-c(1:5)
+y<-c(6:10)
+xMean<-mean(x)
+yMean<-mean(y)
+xMedian<-median(x)
+yMedian<-median(y)
+xySumMean<-mean(x+y)
+xySumMedian<-median(x+y)
+xMeanYMean<-xMean+yMean
+xMedianYMedian<-xMedian+yMedian
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
