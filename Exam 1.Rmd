@@ -1,0 +1,172 @@
+---
+title: "Exam 1"
+author: "Nathan Hernandez"
+date: "Wednesday, October 08, 2014"
+output: html_document
+---
+
+Exam 1 solutions.
+
+## Problem 1  
+
+a. Each LED has 256 settings.
+```{r}
+2^8
+```
+
+b. Each LED can produce 16,777,216 unique colors.
+```{r}
+(2^8)^3
+```
+
+c. There are 216 unique web-safe colors.
+```{r}
+6^3
+```
+
+## Problem 2
+
+a. There is a 0.426% chance that you will qualify for a refund.
+```{r}
+pbinom(8,10,0.99)
+```
+
+b. There is a 0.0798% chance that you could claim a refund on more than one disk.
+```{r}
+pbinom(8,10,1-0.00426)
+```
+
+c. There is a 9.562% chance that a quality-control inspector will sample no more than 10 disks to get his first defective one.
+```{r}
+pbinom(9,10,0.99)
+```
+
+d.
+```{r}
+dbinom(3,10,2/10)
+```
+
+## Problem 3
+
+a. 
+
+## Problem 4
+
+```{r, echo=FALSE}
+Popular <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Popular.csv"))
+```
+
+a. Children chose grades most often for goals.
+```{r}
+table(Popular$Goals)
+```
+
+b.
+```{r}
+GG <- table(Popular$Gender,Popular$Goals)
+round(prop.table(table(Popular$Gender,Popular$Goals),1)*100,1)
+```
+
+c.
+```{r}
+barplot(prop.table(table(Popular$Gender,Popular$Goals),2)*100,
+        col=c("cyan","pink"),
+        main="Goals by Gender",
+        xlab="Goals", 
+        ylab="Gender")
+```
+
+d. Children ranked looks as most important when considering popularity and money least important.
+```{r}
+table(Popular$Grades)
+table(Popular$Sports)
+table(Popular$Looks)
+table(Popular$Money)
+```
+
+e. Boys thought sports were most important for populariy; money least.
+f. Girls thought looks were most important for popularity; money least.
+```{r}
+table(Popular$Gender,Popular$Grades)
+table(Popular$Gender,Popular$Sports)
+table(Popular$Gender,Popular$Looks)
+table(Popular$Gender,Popular$Money)
+```
+
+g. Boys and girls alike both considered money to be least important as far as popularity was concerned, but differed on what they thought was most important when considering popularity.
+
+h. I don't think we could generalize these results to students in my hometown. I believe that the opinions of students in different areas of the country would impact the results of this study. In short, the data wasn't collected from a wide enough audience in my opinion. 
+
+
+## Problem 5
+
+```{r, echo=FALSE}
+Body <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Anthropometric.csv"))
+```
+
+a. The height has two peaks; bimodal (I suspect one for male and one for female).
+```{r}
+hist(Body$Height)
+qqnorm(Body$Height)
+plot(ecdf(Body$Height))
+```
+
+Here we see the two peaks separately. The female's peak seems slight left-skewed.
+```{r}
+Male <- subset(Body, Gender=='Male')
+Female <- subset(Body, Gender=='Female')
+hist(Male$Height)
+qqnorm(Male$Height)
+plot(ecdf(Male$Height))
+
+hist(Female$Height)
+qqnorm(Female$Height)
+plot(ecdf(Female$Height))
+```
+
+b.
+```{r}
+boxplot(Body$Height, Male$Height,Female$Height,
+        main="Height by Gender",
+        xlab="Height",
+        ylab="Gender",
+        horizontal=TRUE)
+axis(2, 1:3, labels=c("Both", "Male","Female"))
+```
+
+c. (Used summary instead of fivenum. I like the labels. Ignore mean.)
+```{r}
+summary(Body$Height)
+tapply(Body$Height, Body$Gender, summary)
+```
+
+d. Both male and female heights are unimodal, but the female height is slightly left skewed. Both seem to have a reasonable amount of variability. The typical male seems to be about 72 inches tall and the typical woman 65 inches. In the dataset provided there were only outliers for women. The interquartile range for males is between 69 inches and 73 inches; for women it was between 63.5 inches and 67 inches.
+
+e. I wouldn't call Tom Hardy "small." He's on the lower end of the interquartile range, but still within average height I would say (though perhaps that is short for actors).
+
+
+## Problem 6
+
+a. The Hybrid III 50th Male Dummy is 71.4 inches tall.
+
+b. 50% will be as tall or taller than the Hybrid III 50th Male Dummy.
+
+c. 0.994% of women would be as tall or taller than the Hybrid III 50th Male Dummy.
+```{r}
+(1-pnorm(71.4, 65.2, sd(Female$Height)))*100
+```
+
+d. The 5th percentile female dummy will be 60.82 inches tall.
+```{r}
+qnorm(0.05, 65.2, sd(Female$Height))
+```
+
+e. 99.99% of adult males will be taller than the 5th percentile female dummy.
+```{r}
+(1-pnorm(60.82, 71.4, sd(Male$Height)))*100
+```
+
+f. I would say that an adult sized dummy that is the median of both genders would probably be wise to add to the tests. If not that then probably a 95th percentile male dummy, this way you're covering changes from the 5th percentile of females to the 95th of males (which should cover most everything).
+
+
+

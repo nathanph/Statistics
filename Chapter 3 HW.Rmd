@@ -1,0 +1,31 @@
+---
+title: "Chapter 3 HW"
+author: "Nathan Hernandez"
+date: "Tuesday, November 04, 2014"
+output: html_document
+---
+
+**Problem 11**  
+H~0~: Those between the ages of 18 and 29 are not more likely to be in favor of marijuana legalization than all other demographics.
+
+H~A~: Those between the ages of 18 and 29 are more likely to be in favor of marijuana legalization than all other demographics.
+
+
+```{r, echo=FALSE}
+Marijuana <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Marijuana.csv"))
+
+round(prop.table(table(Marijuana),1)*100,2)
+```
+
+
+**Problem 12**
+```{r, echo=FALSE}
+Cereal <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Cereals.csv"))
+summary(Cereal)
+
+
+
+
+
+
+
