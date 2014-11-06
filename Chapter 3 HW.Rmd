@@ -18,10 +18,29 @@ round(prop.table(table(Marijuana),1)*100,2)
 ```
 
 
-**Problem 12**
+**Problem 12**  
+a.  
 ```{r, echo=FALSE}
 Cereal <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Cereals.csv"))
-summary(Cereal)
+round(prop.table(table(Cereal$Age, Cereal$Shelf),1)*100,2)
+```
+
+b.  
+```{r, echo=FALSE}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
