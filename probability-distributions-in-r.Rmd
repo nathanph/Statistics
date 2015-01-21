@@ -1,0 +1,169 @@
+---
+title: "Probability Distributions in R"
+author: "Nathan Hernandez"
+date: "January 20, 2015"
+output: html_document
+---
+
+### Continuous
+
+#### Probability
+
+```{r}
+# Area under the standard normal density curve to the left of x=1.25.
+pnorm(1.25)
+
+# Area under the curve to the left of x=2.8 with a µ=2 and σ = 3.
+pnorm(2.8, 2, 3)
+
+# Area under a chi-square distribution with 25 degrees of freedom to the left of x=13.9.
+pchisq(13.9, 25)
+
+# Area under an exponential distribution to the right of 4 and λ=10.
+1 - pexp(4, 10)
+
+# The same is done here by using the lower.tail parameter.
+pexp(4, 10, lower.tail=FALSE)
+
+# Area under a t-distribution to the left of x=3.9 and 7 degrees of freedom.
+pt(3.9, 7) # pt(t-value, d.f)
+```
+
+#### Quantiles
+
+```{r}
+# Find 25th percentile under the pdf.
+qnorm(.25)
+
+# Find the 75th percentile under the pdf where N(2,3).
+qnorm(.75, 2,3)
+
+# Find the 97.5 percentile under a t-distribution with 13 degrees of freedom.
+qt(.975, 13)
+```
+
+#### Random Numbers
+
+```{r}
+# Generate 100 random numbers.
+rnorm(100)
+
+# Store 100 random numbers in variable x.
+x <- rnorm(100)
+
+# Make a histogram of the random numbers.
+hist(x)
+
+# Generate 10 random numbers from a chi-square distribution with 23 degrees of freedom.
+rchisq(10, 23)
+```
+
+#### Plotting the Density Curve (pdf)
+
+```{r}
+# Plot the PDF for N(0,1) between -3 and 3 (there was a typo in the PDF making it -3 to -3, graphing nothing).
+curve(dnorm(x), from = -3, to = 3)
+
+# Generate 50 random values.
+w <- rnorm(50) # random sample from N(0,1)
+
+# Create a scaled histogram.
+hist(w, freq = TRUE) # scale to area 1
+
+# Plot x with a normal density.
+curve(dnorm(x), add = TRUE) # impose normal density
+
+# Create a histogram with a widened y-axis range.
+hist(w, freq = TRUE, ylim = c(0, 50)) # widen y-axis range
+curve(dnorm(x), add=TRUE)
+
+# Plot the pdf of a chi-square distribution with 14 degrees of freedom.
+curve(dchisq(x, 14), from = 0, to = 20)
+```
+
+### Discrete
+
+#### Example--Binomial
+
+```{r}
+# A biased coin with a 0.8 probability of landing on heads 5 times out of 16 tosses.
+dbinom(5,16, .8)
+
+# This should be equivalent to the previous solution.
+choose(16,5)*.8^5*.2^11
+
+# The probability of getting at most 5 heads in 16 tosses with the same biased coin.
+pbinom(5,16,.8)
+
+# This should be equivalent to the previous solution.
+dbinom(0,16,.8)+dbinom(1,16,.8)+dbinom(2,16,.8)+dbinom(3,16,.8)+dbinom(4,16,.8)+dbinom(5,16,.8)
+
+# The 25th percentile.
+qbinom(.25,16,.8)
+
+# Here we prove our solution works.
+pbinom(11, 16, .8)
+pbinom(12, 16, .8)
+```
+
+#### Example--Geometric
+
+```{r}
+# The probability of getting the first head on the fourth toss.
+dgeom(3,.8)
+
+# The probability of getting heads on one of the first four tosses.
+pgeom(3,.8)
+```
+
+#### Example--Poisson
+
+```{r}
+# A Poisson distribution used to determine the probability of California experiencing three earthquates in a given year against an average of 5 each year. 
+dpois(3,5)
+
+# This should provide the same solution.
+5^3*exp(-5)/(3*2)
+```
+
+#### Random Numbers
+
+```{r}
+# This code simulates 25 flips of a biased coin where P(Head) = 0.8 or 80%.
+# The output is the total count of heads (or successes) in those 25 flips.
+rbinom(1,25,.8)
+
+# This value seeds the pseudo-random number generator in R. It is optional.
+# Anyone using the same seed value will generate identical "random" values.
+set.seed(0)
+
+# This code simulates 25 flips of a biased coin where P(Head) = 0.8 or 80%.
+# The experiment is repeated 10 times; output is the total number of heads.
+# There will be a total of ten values, one for each repetition of 25 flips.
+# Those ten values will be stored in a vector called "heads".
+heads <- rbinom(10, 25, .8)
+
+# This code prints out the values in the vector heads.
+heads
+
+# This code creates a frequency table of the values in the vector heads.  
+table(heads)
+
+# This code creates a bar chart of the values in the vector heads.
+barplot(table(heads))
+
+# This code simulates 25 flips of a biased coin where P(Head) = 0.8 or 80%.
+# The experiment is repeated 100 times; output is the total number of heads.
+# There will be a total of 100 values, one for each repetition of 25 flips.
+# Those 100 values will be stored in a vector called "heads2".
+heads2 <- rbinom(100, 25, .8)
+
+# This code prints out the values in the vector heads2.
+heads2
+
+# This code creates a frequency table of the values in the vector heads2. 
+table(heads2)
+
+# This code creates a bar chart of the values in the vector heads.
+barplot(table(heads2))
+```

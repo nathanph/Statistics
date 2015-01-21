@@ -1,0 +1,178 @@
+---
+title: "Exam 2"
+author: "Nathan Hernandez"
+date: "Monday, November 17, 2014"
+output: html_document
+---
+
+### Problem 1
+#### 1.a
+```{r,echo=FALSE}
+mm <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/MandM.csv"))
+marijuanaYes <- nrow(subset(mm, Marijuana=="Yes"))
+marijuanaNo <- nrow(subset(mm, Marijuana=="No"))
+marriageYes <- nrow(subset(mm, Marriage=="Yes"))
+marriageNo <- nrow(subset(mm, Marriage=="No"))
+matrix <- matrix(
+  c(
+    marijuanaYes,
+    marijuanaNo,
+    marriageYes,
+    marriageNo
+  ),
+  ncol=2, 
+  byrow=TRUE)
+colnames(matrix) <- c("Yes","No")
+rownames(matrix) <- c("Marijuana","Marriage")
+table <- as.table(matrix)
+table
+```
+
+#### 1.b
+A test of homogeneity could be used to determine whether frequency counts are distributed identically across different populations.
+
+#### 1.c
+H~0~: P~states that allow marijuana use~ = P~states that allow same-sex marriage~  
+H~1~: P~states that allow marijuana use~ ≠ P~states that allow same-sex marriage~
+
+#### 1.d
+```{r,echo=FALSE}
+#selection <- subset(mm, select=Marijuana, drop=T)
+#N <- 10^2
+#result <- numeric(N)
+# for(i in 1:N) {
+#   index <- sample(50, size=6, replace=FALSE)
+#   result[i] <- mean(selection[index]) - mean(selection[index])
+# }
+chisq.test(table(mm$Marijuana,mm$Marriage),correct=FALSE)
+```
+The null hypothesis can be rejected at 0.05.  
+
+#### 1.e
+The overall percentages of states that allow gay marriage and use of marijuana were dissimilar.
+
+### Problem 2
+#### 2.a
+Region vs Marriage
+```{r,echo=FALSE}
+mm <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/MandM.csv"))
+tableMarriage <- table(mm$Region,mm$Marriage)
+tableMarriage
+```
+
+Region vs Marijuana
+```{r,echo=FALSE}
+mm <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/MandM.csv"))
+tableMarijuana <- table(mm$Region,mm$Marijuana)
+tableMarijuana
+```
+
+#### 2.b
+A test of indepence could be used to determine whether there is an association between these two variables (same-sex marriage and marijuana acceptance).
+
+#### 2.c
+H~0~: Same-sex marriage and marijuana acceptance are independent.  
+H~1~: Same-sex marriage and marijuana acceptance are not independent.
+
+#### 2.d
+```{r,echo=FALSE}
+Midwest <- subset(mm, Region == "Midwest")
+Midwest <- table(mm$Marriage,mm$Marriage)
+chisq.test(Midwest, correct=FALSE)
+South <- subset(mm, Region == "South")
+South <- table(mm$Marriage,mm$Marriage)
+chisq.test(South, correct=FALSE)
+Pacific <- subset(mm, Region == "Pacific")
+Pacific <- table(mm$Marriage,mm$Marriage)
+chisq.test(Pacific, correct=FALSE)
+West <- subset(mm, Region == "West")
+West <- table(mm$Marriage,mm$Marriage)
+chisq.test(West, correct=FALSE)
+Northeast <- subset(mm, Region == "Northeast")
+Northeast <- table(mm$Marriage,mm$Marriage)
+chisq.test(Northeast, correct=FALSE)
+```
+
+#### 2.e
+
+
+
+### Problem 3
+N~0~: μ~First~ = μ~Second~  
+N~1~: μ~First~ ≠ μ~Second~
+
+```{r}
+Draft <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Draft.csv"))
+First <- subset(Draft, Half=="First")
+Second <- subset(Draft, Half=="Second")
+FirstMean <- mean(First$Number.1970)
+SecondMean <- mean(Second$Number.1970)
+obs.diff <- FirstMean - SecondMean
+data <- subset(Draft, select=Number.1970, drop=T)
+N <- 10^5-1
+result <- numeric(N)
+for(i in 1:N) {
+  index <- sample(366, size=182, replace=FALSE)
+  result[i] <- mean(data[index]) - mean(data[-index])
+}
+pvalue.upper <- (sum(result>=obs.diff)+1)/(N+1)
+pvalue.lower <- (sum(result<=obs.diff)+1)/(N+1)
+pvalue.two<-format(2*min(pvalue.upper,pvalue.lower),scientific=FALSE)
+```
+Obsereved difference of 45.45 and p-value of 0.00004. We can reject the null hypothesis.
+
+### Problem 4
+#### 4.a
+One would expect to see 500/39 per number, or approximately 12.82051. This works out to 2.564% per number.  
+Degrees of freedom: 38  
+Expected frequency counts: 0.02564*500 = 12.82  
+
+H~0~: The proportion of each number is equally represented.  
+H~1~: The proportion of any number is not equally represented.
+
+```{r,echo=FALSE}
+lottery <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/Lottery.csv"))
+table <- table(lottery)
+#prop.table(table)*100
+table
+chisq.test(table)
+```
+The null hypothesis cannot be rejected at 0.05.  
+
+#### 4.b
+One would expect to see 500/39 per number, or approximately 12.82051. This works out to 2.564% per number.  
+Degrees of freedom: 38  
+Expected frequency counts: 0.02564*500 = 12.82  
+
+H~0~: The proportion of each number is equally represented.
+H~1~: The proportion of any number is not equally represented.
+
+```{r,echo=FALSE}
+skulls <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/EgyptianSkullsA.csv"))
+table <- table(skulls)
+chisq.test(skulls)
+```
+The null hypothesis cannot be rejected at 0.05.  
+
+
+
+### Problem 5
+H~0~ = The two variables are independent.  
+H~1~ = The two variables are dependent.
+
+The two variables are dependent between  the values of 3.8434 and 18.3834.  
+```{r,echo=FALSE}
+m<-3.8434
+table <- matrix(c(m,10,10,m),ncol=2,byrow=TRUE)
+colnames(table) <- c("B1","B2")
+rownames(table) <- c("A1","A2")
+table <- as.table(table)
+chisq.test(table)
+
+m<-18.3834
+table <- matrix(c(m,10,10,m),ncol=2,byrow=TRUE)
+colnames(table) <- c("B1","B2")
+rownames(table) <- c("A1","A2")
+table <- as.table(table)
+chisq.test(table)
+```

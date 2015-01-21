@@ -1,0 +1,145 @@
+---
+title: "Exam 3"
+author: "Nathan Hernandez"
+date: "Monday, December 08, 2014"
+output: html_document
+---
+
+### Problem 1
+
+1.a.  
+```{r, echo=FALSE}
+sheets <- rnorm(5, mean=0.1, sd=0.005)
+plywood <- mean(sheets)
+count = 10^4
+sheets <- rnorm(count*5, mean=0.1, sd=0.005)
+for(i in 1:count) {
+    plywood[i] <- sheets[(i-1)*5+1]+sheets[(i-1)*5+2]+sheets[(i-1)*5+3]+sheets[(i-1)*5+4]+sheets[(i-1)*5+5]
+}
+summary(plywood)
+```
+  
+1.b. This seems very reasonable to me.  
+```{r, echo=FALSE}
+
+h <- hist(plywood)
+# curve(dnorm(x,mean=5,sd=0.005),4.95,5.05, add=TRUE, lwd=2, lty=5)
+min <- plywood[which.min(plywood)]
+max <- plywood[which.max(plywood)]
+xfit<-seq(min,max,length=count) 
+yfit<-dnorm(xfit,mean=mean(plywood,na.rm=TRUE),sd=sd(plywood,na.rm=TRUE)) 
+yfit <- yfit*diff(h$mids[1:2])*length(plywood)
+lines(xfit, yfit, col="blue", lwd=2, lty=5)
+boxplot(plywood, horizontal=TRUE)
+```
+
+1.c. They are not meeting their goal. Only ~97% of boards fall within the range of 0.475 and 0.525 inches.
+```{r,echo=FALSE}
+mean <- mean(plywood)
+sd <- sd(plywood)
+(pnorm(0.525,mean,sd)-pnorm(0.475,mean,sd))*100
+``` 
+
+1.d. According to the Central Limit Theorem the sampling distribution of the mean should be ~0.1.
+```{r,echo=FALSE}
+#100 samples
+sheets <- rnorm(100, mean=0.1, sd=0.005)
+average <- mean(sheets)
+average
+```
+
+### Problem 2
+
+2.a.  
+```{r, echo=FALSE}
+FlightDelays <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/FlightDelays.csv"))
+library(boot)
+boot.mean <- function(x,i){boot.mean <- mean(x$Delay[i])}
+
+UA <- subset(FlightDelays, Carrier=="UA")
+AA <- subset(FlightDelays, Carrier=="AA")
+
+count <- 10^4
+
+
+bootUA <- boot(UA, boot.mean, R = 10000)
+bootAA <- boot(AA, boot.mean, R = 10000)
+
+print(bootUA)
+print(bootAA)
+
+
+UAbca <- boot.ci(bootUA, type="bca")
+AAbca <- boot.ci(bootAA, type="bca")
+
+
+UAbca
+AAbca
+
+
+plot(bootUA)
+plot(bootAA)
+```
+
+2.b. The data appears slightly skewed with modal distribution. 
+```{r,echo=FALSE}
+
+FlightDelays <- read.csv(file = url("http://www1.appstate.edu/~thomleyje/data-files/FlightDelays.csv"))
+library(boot)
+boot.mean <- function(x,i){boot.mean <- mean(x$Delay[i])}
+
+UA <- subset(FlightDelays, Carrier=="UA", select=Delay, drop=TRUE)
+AA <- subset(FlightDelays, Carrier=="AA", select=Delay, drop=TRUE)
+
+obs.stat <- mean(UA)/mean(AA)
+
+count <- 10^4
+my.bootavg <- numeric(count)
+for(i in 1:count) {
+  xua <- sample(UA,1123,replace=TRUE)
+  xaa <- sample(AA,2906,replace=TRUE)
+  my.bootavg[i] <- mean(xua)/mean(xaa)
+}
+
+hist(my.bootavg)
+abline(v=c(obs.stat,mean(my.bootavg)),col=c("red","blue"))
+boxplot(my.bootavg, horizontal=T)
+mean(my.bootavg)
+sd(my.bootavg)
+
+print(bootUA$t0/bootAA$t0)
+
+qqnorm(my.bootavg)
+qqline(my.bootavg)
+```
+
+
+2.c. Yes, it is reasonable to assert that the mean delays for the two airliners are not the same.  
+```{r, echo=FALSE}
+print(confidence <- quantile(my.bootavg, c(.025, .975)))
+```
+
+
+2.d.  
+```{r,echo=FALSE}
+obs.stat <- mean(UA) / mean(AA)
+
+bias <- mean(my.bootavg) - obs.stat
+
+print(bias/sd(my.bootavg)*100)
+```
+
+2.e. This is almost certainly not true. Airliners have probably optimized their process to reduce delay issues, but I'm sure at least occasionally one plane's stall will propagate through and stall other planes.
+
+
+
+
+
+
+
+
+
+
+
+
+
